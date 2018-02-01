@@ -10,4 +10,13 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 	}
+
+	@Override
+	public void onBackPressed() {
+		getWindow().setSharedElementReturnTransition(null);
+		getWindow().setSharedElementReenterTransition(null);
+		findViewById(R.id.image_tea).setTransitionName(null);
+
+		super.onBackPressed();
+	}
 }
