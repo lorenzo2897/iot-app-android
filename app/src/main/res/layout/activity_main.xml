@@ -7,13 +7,135 @@
     android:layout_height="match_parent"
     tools:context="io.silvestri.teapot.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="32dp"
+        android:orientation="horizontal"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/linearLayout"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp">
+
+        <ImageView
+            android:id="@+id/image_weak"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_weight="0.09"
+            android:src="@drawable/tea_weak"/>
+
+        <SeekBar
+            android:id="@+id/seek_strength"
+            style="@android:style/Widget.DeviceDefault.Light.SeekBar"
+            android:layout_width="wrap_content"
+            android:layout_height="42dp"
+            android:layout_weight="1"
+            android:max="4"
+            android:progress="2"/>
+
+        <ImageView
+            android:id="@+id/image_strong"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:src="@drawable/tea_strong"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="48dp"
+        android:orientation="horizontal"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:id="@+id/linearLayout2">
+
+        <ImageView
+            android:id="@+id/image_cold"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_weight="0.09"
+            android:src="@drawable/tea_cold"/>
+
+        <SeekBar
+            android:id="@+id/seek_temperature"
+            style="@android:style/Widget.DeviceDefault.Light.SeekBar"
+            android:layout_width="wrap_content"
+            android:layout_height="42dp"
+            android:layout_weight="1"
+            android:max="50"
+            android:progress="40"/>
+
+        <ImageView
+            android:id="@+id/image_hot"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:src="@drawable/tea_hot"/>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/image_tea"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:src="@drawable/tea"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonStart"
+        app:layout_constraintVertical_bias="0.0"/>
+
+    <Button
+        android:id="@+id/buttonStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:paddingLeft="32dp"
+        android:paddingRight="32dp"
+        android:paddingBottom="16dp"
+        android:paddingTop="16dp"
+        android:text="Make me tea!"
+        android:textAppearance="@android:style/TextAppearance.Material"
+        android:textSize="18sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/buttonSchedule"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="2dp"
+        app:layout_constraintVertical_chainStyle="packed"/>
+
+    <Button
+        android:id="@+id/buttonSchedule"
+        style="@android:style/Widget.Material.Light.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="schedule some for later"
+        android:textAppearance="@android:style/TextAppearance.Material.Body1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="8dp"/>
 
 </android.support.constraint.ConstraintLayout>
