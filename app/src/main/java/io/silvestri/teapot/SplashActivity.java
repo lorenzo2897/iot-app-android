@@ -6,12 +6,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+
 public class SplashActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_splash);
+
+		FirebaseMessaging.getInstance().subscribeToTopic("tea");
 
 		findViewById(R.id.image_tea).setOnClickListener(new View.OnClickListener() {
 			@Override

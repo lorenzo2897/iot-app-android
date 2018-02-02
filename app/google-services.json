@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "123255658446",
+    "firebase_url": "https://teapot-38ec9.firebaseio.com",
+    "project_id": "teapot-38ec9",
+    "storage_bucket": "teapot-38ec9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:123255658446:android:4b6bca7419871be1",
+        "android_client_info": {
+          "package_name": "io.silvestri.teapot"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "123255658446-u08k17jgb2r6dlml55l2f8t9pnaqo6ee.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "io.silvestri.teapot",
+            "certificate_hash": "452ed314b1a89475fd995547e4c68c83244ece0b"
+          }
+        },
+        {
+          "client_id": "123255658446-heb8g4iiqditmroh9je9isedc9s5dncm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAKGYZwpPHh1o2uKZNmFWxbA5g1YPS56OM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "123255658446-heb8g4iiqditmroh9je9isedc9s5dncm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
