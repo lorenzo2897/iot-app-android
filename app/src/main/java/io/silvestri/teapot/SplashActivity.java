@@ -40,7 +40,7 @@ public class SplashActivity extends Activity {
 			if (state.equals("ready")) {
 				startMainActivity(intent);
 			} else {
-				startProgressActivity(state);
+				startProgressActivity(intent);
 			}
 		}
 	};
@@ -89,9 +89,9 @@ public class SplashActivity extends Activity {
 		startActivity(intent, options.toBundle());
 	}
 
-	void startProgressActivity(String state) {
+	void startProgressActivity(Intent deviceStatus) {
 		Intent intent = new Intent(this, ProgressActivity.class);
-		intent.putExtra("state", state);
+		intent.putExtras(deviceStatus);
 		startActivity(intent);
 	}
 

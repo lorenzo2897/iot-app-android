@@ -1,5 +1,6 @@
 package io.silvestri.teapot;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -8,8 +9,11 @@ import android.content.IntentFilter;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +24,8 @@ import java.util.Map;
 public class ProgressActivity extends Activity {
 
 	TextView status_text;
+	TextView details_text;
+	ImageButton details_button;
 	Button button_stop;
 	ImageView image_tea;
 
@@ -30,6 +36,8 @@ public class ProgressActivity extends Activity {
 
 		/* *** init views *** */
 		status_text = findViewById(R.id.text_status);
+		details_text = findViewById(R.id.details_text);
+		details_button = findViewById(R.id.details_button);
 		button_stop = findViewById(R.id.button_stop);
 		image_tea = findViewById(R.id.image_tea);
 
@@ -45,6 +53,8 @@ public class ProgressActivity extends Activity {
 				resetTeapot();
 			}
 		});
+
+		details_button.setOnTouchListener(detailsTouchListener);
 	}
 
 	private BroadcastReceiver teaBroadcastReceiver = new BroadcastReceiver() {
@@ -132,6 +142,17 @@ public class ProgressActivity extends Activity {
 
 		status_text.setText(state_descriptions.containsKey(state) ? state_descriptions.get(state) : state);
 		image_tea.setImageResource(state_images.containsKey(state) ? state_images.get(state) : R.drawable.tea);
+
+		// update extended info
+		StringBuilder info_details = new StringBuilder();
+		for (String el : extras.keySet()) {
+			info_details
+					.append(el)
+					.append(": ")
+					.append(extras.getString(el, "null"))
+					.append("\n");
+		}
+		details_text.setText(info_details.toString());
 	}
 
 	void setErrorState(String message) {
@@ -145,5 +166,18 @@ public class ProgressActivity extends Activity {
 		TeapotAPI.makeRequest("abort");
 	}
 
-	// TODO info button with detailed state
+	View.OnTouchListener detailsTouchListener = new View.OnTouchListener() {
+		@Override
+		public boolean onTouch(View view, MotionEvent motionEvent) {
+			if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+				TeapotAPI.makeRequest("get_state");
+				details_text.setVisibility(View.VISIBLE);
+				return true;
+			} else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+				details_text.setVisibility(View.GONE);
+				return true;
+			}
+			return false;
+		}
+	};
 }
