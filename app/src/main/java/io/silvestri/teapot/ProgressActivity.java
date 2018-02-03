@@ -78,6 +78,9 @@ public class ProgressActivity extends Activity {
 		// subscribe to broadcasts
 		LocalBroadcastManager.getInstance(this).registerReceiver(teaBroadcastReceiver, new IntentFilter("tea"));
 		LocalBroadcastManager.getInstance(this).registerReceiver(errorBroadcastReceiver, new IntentFilter("error"));
+
+		// ask for the very latest state
+		TeapotAPI.makeRequest("get_state");
 	}
 
 	@Override
