@@ -29,10 +29,16 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 		/* check for error */
 		if (messageData.containsKey("error")) {
 			Log.e("MSG", "got an error notification: " + messageData.get("error"));
+			// send an error notification if required
 			if (messageData.containsKey("notify")) {
 				sendNotification("Tea failed", messageData.get("error"), false);
 			}
-			// TODO better error detection
+			// broadcast the error
+			Intent broadcast = new Intent("error");
+			for (Map.Entry<String, String> el : messageData.entrySet()) {
+				broadcast.putExtra(el.getKey(), el.getValue());
+			}
+			LocalBroadcastManager.getInstance(this).sendBroadcast(broadcast);
 			return;
 		}
 
@@ -48,8 +54,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 		}
 
 		// broadcast the data to the foreground app
-		Intent broadcast = new Intent();
-		broadcast.setAction("tea");
+		Intent broadcast = new Intent("tea");
 		for (Map.Entry<String, String> el : messageData.entrySet()) {
 			broadcast.putExtra(el.getKey(), el.getValue());
 		}
