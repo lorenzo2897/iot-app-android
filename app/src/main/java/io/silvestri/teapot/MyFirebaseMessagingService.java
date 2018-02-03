@@ -8,30 +8,67 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+
+import java.util.Map;
 
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 	@Override
 	public void onMessageReceived(RemoteMessage remoteMessage) {
 		super.onMessageReceived(remoteMessage);
-		StringBuilder keys = new StringBuilder();
-		for (String i : remoteMessage.getData().keySet()) {
-			keys.append(" ").append(i);
+
+		Map<String, String> messageData = remoteMessage.getData();
+
+		Log.i("MSG", "got push: " + messageData.size());
+
+		/* check for error */
+		if (messageData.containsKey("error")) {
+			Log.e("MSG", "got an error notification: " + messageData.get("error"));
+			if (messageData.containsKey("notify")) {
+				sendNotification("Tea failed", messageData.get("error"), false);
+			}
+			// TODO better error detection
+			return;
 		}
-		Log.e("MSG", "got push: " + remoteMessage.getData().size());
-		sendNotification("Got push", String.valueOf(remoteMessage.getData().size()));
+
+		/* process the push */
+		if (!messageData.containsKey("state")) {
+			Log.e("MSG", "push does not contain any data, ignoring.");
+			return;
+		}
+
+		// send a notification if tea is ready
+		if (messageData.containsKey("notify")) {
+			sendNotification("Tea is ready!", "", true);
+		}
+
+		// broadcast the data to the foreground app
+		Intent broadcast = new Intent();
+		broadcast.setAction("tea");
+		for (Map.Entry<String, String> el : messageData.entrySet()) {
+			broadcast.putExtra(el.getKey(), el.getValue());
+		}
+		LocalBroadcastManager.getInstance(this).sendBroadcast(broadcast);
 	}
 
-	private void sendNotification(String title, String messageBody) {
+	private void sendNotification(String title, String messageBody, boolean isDone) {
 
 		NotificationManager notificationManager =
 				(NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-		Intent intent = new Intent(this, ProgressActivity.class);
+		Intent intent;
+		if (isDone) {
+			intent = new Intent(this, ProgressActivity.class);
+			intent.putExtra("done", true);
+		} else {
+			intent = new Intent(this, SplashActivity.class);
+		}
+
 		intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
 				PendingIntent.FLAG_ONE_SHOT);
@@ -48,6 +85,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 		}
 		notificationBuilder
 				.setSmallIcon(R.drawable.tea)
+				.setColor(getColor(R.color.colorPrimary))
 				.setContentTitle(title)
 				.setContentText(messageBody)
 				.setAutoCancel(true)
