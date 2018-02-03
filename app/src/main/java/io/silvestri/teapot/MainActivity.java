@@ -107,6 +107,17 @@ public class MainActivity extends Activity {
 		// subscribe to broadcasts
 		LocalBroadcastManager.getInstance(this).registerReceiver(teaBroadcastReceiver, new IntentFilter("tea"));
 		LocalBroadcastManager.getInstance(this).registerReceiver(errorBroadcastReceiver, new IntentFilter("error"));
+
+		// ask for the very latest state
+		TeapotAPI.makeRequest("get_state");
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		// unsubscribe to broadcasts
+		LocalBroadcastManager.getInstance(this).unregisterReceiver(teaBroadcastReceiver);
+		LocalBroadcastManager.getInstance(this).unregisterReceiver(errorBroadcastReceiver);
 	}
 
 	void changeSettings() {

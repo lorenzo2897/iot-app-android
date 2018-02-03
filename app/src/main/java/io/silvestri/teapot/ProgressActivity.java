@@ -8,12 +8,19 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ProgressActivity extends Activity {
 
 	TextView status_text;
+	Button button_stop;
+	ImageView image_tea;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +29,8 @@ public class ProgressActivity extends Activity {
 
 		/* *** init views *** */
 		status_text = findViewById(R.id.text_status);
+		button_stop = findViewById(R.id.button_stop);
+		image_tea = findViewById(R.id.image_tea);
 
 		/* *** intent extras *** */
 		if (getIntent().getExtras() != null) {
@@ -45,6 +54,7 @@ public class ProgressActivity extends Activity {
 				Intent newIntent = new Intent(ProgressActivity.this, MainActivity.class);
 				newIntent.putExtras(intent);
 				startActivity(newIntent);
+				finish();
 			} else {
 				updateState(intent.getExtras());
 			}
@@ -69,14 +79,59 @@ public class ProgressActivity extends Activity {
 		LocalBroadcastManager.getInstance(this).registerReceiver(errorBroadcastReceiver, new IntentFilter("error"));
 	}
 
+	@Override
+	protected void onPause() {
+		super.onPause();
+		// unsubscribe to broadcasts
+		LocalBroadcastManager.getInstance(this).unregisterReceiver(teaBroadcastReceiver);
+		LocalBroadcastManager.getInstance(this).unregisterReceiver(errorBroadcastReceiver);
+	}
+
 	void updateState(Bundle extras) {
-		status_text.setText(extras.getString("state"));
-		// TODO better display
+		String state = extras.getString("state");
+
+		if (state == null) {
+			return;
+		}
+
+		if (state.equals("done")) {
+			status_text.setText("Your tea is ready!");
+			image_tea.setImageResource(R.drawable.tea); // TODO better images
+			button_stop.setText("Start over");
+			return;
+		}
+
+		button_stop.setText("Stop the tea!");
+
+		Map<String, String> state_descriptions = new HashMap<>();
+		Map<String, Integer> state_images = new HashMap<>();
+
+		state_descriptions.put("boiling", "Boiling the water");
+		state_images.put("boiling", R.drawable.tea);
+
+		state_descriptions.put("pumping", "Filling the teacup");
+		state_images.put("pumping", R.drawable.tea);
+
+		state_descriptions.put("lowering", "Lowering the tea bag");
+		state_images.put("lowering", R.drawable.tea);
+
+		state_descriptions.put("brewing", "Brewing the tea");
+		state_images.put("brewing", R.drawable.tea);
+
+		state_descriptions.put("raising", "Raising the tea bag");
+		state_images.put("raising", R.drawable.tea);
+
+		state_descriptions.put("cooling", "Waiting for the tea to cool down");
+		state_images.put("cooling", R.drawable.tea);
+
+		status_text.setText(state_descriptions.containsKey(state) ? state_descriptions.get(state) : state);
+		image_tea.setImageResource(state_images.containsKey(state) ? state_images.get(state) : R.drawable.tea);
 	}
 
 	void setErrorState(String message) {
 		status_text.setText(message);
-		// TODO error image
+		image_tea.setImageResource(R.drawable.tea); // TODO error image
+		button_stop.setText("Start over");
 	}
 
 	void resetTeapot() {

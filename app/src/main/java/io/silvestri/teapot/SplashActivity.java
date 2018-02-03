@@ -76,9 +76,9 @@ public class SplashActivity extends Activity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-
 		// unsubscribe to broadcasts
 		LocalBroadcastManager.getInstance(this).unregisterReceiver(teaBroadcastReceiver);
+		LocalBroadcastManager.getInstance(this).unregisterReceiver(errorBroadcastReceiver);
 	}
 
 	void startMainActivity(Intent deviceStats) {
