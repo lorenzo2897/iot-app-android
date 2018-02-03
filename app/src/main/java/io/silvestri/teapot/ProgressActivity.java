@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.View;
@@ -94,9 +95,11 @@ public class ProgressActivity extends Activity {
 			return;
 		}
 
+		button_stop.setBackgroundTintList(ColorStateList.valueOf(getColor(R.color.colorPrimary)));
+
 		if (state.equals("done")) {
 			status_text.setText("Your tea is ready!");
-			image_tea.setImageResource(R.drawable.tea); // TODO better images
+			image_tea.setImageResource(R.drawable.tea);
 			button_stop.setText("Start over");
 			return;
 		}
@@ -107,22 +110,22 @@ public class ProgressActivity extends Activity {
 		Map<String, Integer> state_images = new HashMap<>();
 
 		state_descriptions.put("boiling", "Boiling the water");
-		state_images.put("boiling", R.drawable.tea);
+		state_images.put("boiling", R.drawable.progress_boiling);
 
 		state_descriptions.put("pumping", "Filling the teacup");
-		state_images.put("pumping", R.drawable.tea);
+		state_images.put("pumping", R.drawable.progress_pumping);
 
 		state_descriptions.put("lowering", "Lowering the tea bag");
-		state_images.put("lowering", R.drawable.tea);
+		state_images.put("lowering", R.drawable.progress_lowering);
 
 		state_descriptions.put("brewing", "Brewing the tea");
-		state_images.put("brewing", R.drawable.tea);
+		state_images.put("brewing", R.drawable.progress_brewing);
 
 		state_descriptions.put("raising", "Raising the tea bag");
-		state_images.put("raising", R.drawable.tea);
+		state_images.put("raising", R.drawable.progress_raising);
 
 		state_descriptions.put("cooling", "Waiting for the tea to cool down");
-		state_images.put("cooling", R.drawable.tea);
+		state_images.put("cooling", R.drawable.progress_cooling);
 
 		status_text.setText(state_descriptions.containsKey(state) ? state_descriptions.get(state) : state);
 		image_tea.setImageResource(state_images.containsKey(state) ? state_images.get(state) : R.drawable.tea);
@@ -130,8 +133,9 @@ public class ProgressActivity extends Activity {
 
 	void setErrorState(String message) {
 		status_text.setText(message);
-		image_tea.setImageResource(R.drawable.tea); // TODO error image
+		image_tea.setImageResource(R.drawable.tea_error);
 		button_stop.setText("Start over");
+		button_stop.setBackgroundTintList(ColorStateList.valueOf(getColor(R.color.colorError)));
 	}
 
 	void resetTeapot() {
