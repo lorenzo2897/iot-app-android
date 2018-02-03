@@ -23,7 +23,7 @@ public class SplashActivity extends Activity {
 			// Get extra data included in the Intent
 			String state = intent.getStringExtra("state");
 			if (state.equals("ready")) {
-				startMainActivity();
+				startMainActivity(intent);
 			} else {
 				startProgressActivity(state);
 			}
@@ -46,10 +46,10 @@ public class SplashActivity extends Activity {
 
 		FirebaseMessaging.getInstance().subscribeToTopic("tea");
 
-		findViewById(R.id.image_tea).setOnClickListener(new View.OnClickListener() {
+		findViewById(R.id.text_status).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				startMainActivity();
+				startMainActivity(new Intent());
 			}
 		});
 	}
@@ -61,7 +61,9 @@ public class SplashActivity extends Activity {
 		// subscribe to broadcasts
 		LocalBroadcastManager.getInstance(this).registerReceiver(teaBroadcastReceiver, new IntentFilter("tea"));
 		LocalBroadcastManager.getInstance(this).registerReceiver(errorBroadcastReceiver, new IntentFilter("error"));
+
 		// fire get_stats command
+		TeapotAPI.makeRequest("get_stats");
 	}
 
 	@Override
@@ -72,8 +74,9 @@ public class SplashActivity extends Activity {
 		LocalBroadcastManager.getInstance(this).unregisterReceiver(teaBroadcastReceiver);
 	}
 
-	void startMainActivity() {
+	void startMainActivity(Intent deviceStats) {
 		Intent intent = new Intent(this, MainActivity.class);
+		intent.putExtras(deviceStats);
 		ActivityOptions options = ActivityOptions.
 				makeSceneTransitionAnimation(this, findViewById(R.id.image_tea), "teapot");
 		startActivity(intent, options.toBundle());
