@@ -17,6 +17,21 @@ import java.util.Objects;
 
 public class SplashActivity extends Activity {
 
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_splash);
+
+		FirebaseMessaging.getInstance().subscribeToTopic("tea");
+
+		findViewById(R.id.text_status).setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				startMainActivity(new Intent());
+			}
+		});
+	}
+
 	private BroadcastReceiver teaBroadcastReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
@@ -36,23 +51,15 @@ public class SplashActivity extends Activity {
 			// Get extra data included in the Intent
 			String message = intent.getStringExtra("error");
 			((TextView)findViewById(R.id.text_status)).setText(message);
+			// enable the reset button
+			findViewById(R.id.image_tea).setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					resetTeapot();
+				}
+			});
 		}
 	};
-
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_splash);
-
-		FirebaseMessaging.getInstance().subscribeToTopic("tea");
-
-		findViewById(R.id.text_status).setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				startMainActivity(new Intent());
-			}
-		});
-	}
 
 	@Override
 	protected void onResume() {
@@ -86,5 +93,9 @@ public class SplashActivity extends Activity {
 		Intent intent = new Intent(this, ProgressActivity.class);
 		intent.putExtra("state", state);
 		startActivity(intent);
+	}
+
+	void resetTeapot() {
+		TeapotAPI.makeRequest("abort");
 	}
 }
