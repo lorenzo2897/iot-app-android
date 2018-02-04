@@ -19,6 +19,7 @@ public class MainActivity extends Activity {
 
 	SeekBar seek_temp;
 	SeekBar seek_strength;
+	TextView seek_temp_number;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +28,7 @@ public class MainActivity extends Activity {
 
 		/* *** init views *** */
 		seek_temp = findViewById(R.id.seek_temperature);
+		seek_temp_number = findViewById(R.id.seek_temp_number);
 		seek_strength = findViewById(R.id.seek_strength);
 
 		/* *** intent extras *** */
@@ -53,7 +55,29 @@ public class MainActivity extends Activity {
 				scheduleTeaClicked();
 			}
 		});
-		SeekBar.OnSeekBarChangeListener seekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
+
+		seek_temp.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+				seek_temp_number.setText(String.valueOf(i + 30) + "°C");
+				seek_temp_number.setX(seek_temp.getX()
+										+ seek_temp.getPaddingStart()
+										+ i / 60.0f
+											* (seek_temp.getWidth() - seek_temp.getPaddingStart() - seek_temp.getPaddingEnd()));
+			}
+
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {
+				seek_temp_number.setVisibility(View.VISIBLE);
+			}
+
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
+				seek_temp_number.setVisibility(View.GONE);
+				changeSettings();
+			}
+		});
+		seek_strength.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 			@Override
 			public void onProgressChanged(SeekBar seekBar, int i, boolean b) {}
 
@@ -64,10 +88,7 @@ public class MainActivity extends Activity {
 			public void onStopTrackingTouch(SeekBar seekBar) {
 				changeSettings();
 			}
-		};
-		// TODO show value on thumb
-		seek_temp.setOnSeekBarChangeListener(seekBarChangeListener);
-		seek_strength.setOnSeekBarChangeListener(seekBarChangeListener);
+		});
 	}
 
 	@Override
