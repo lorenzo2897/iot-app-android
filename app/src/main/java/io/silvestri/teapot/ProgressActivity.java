@@ -110,6 +110,17 @@ public class ProgressActivity extends Activity {
 
 		button_stop.setBackgroundTintList(ColorStateList.valueOf(getColor(R.color.colorPrimary)));
 
+		// update extended info
+		StringBuilder info_details = new StringBuilder();
+		for (String el : extras.keySet()) {
+			info_details
+					.append(el)
+					.append(": ")
+					.append(extras.getString(el, "null"))
+					.append("\n");
+		}
+		details_text.setText(info_details.toString());
+
 		if (state.equals("done")) {
 			status_text.setText("Your tea is ready!");
 			image_tea.setImageResource(R.drawable.tea);
@@ -142,17 +153,6 @@ public class ProgressActivity extends Activity {
 
 		status_text.setText(state_descriptions.containsKey(state) ? state_descriptions.get(state) : state);
 		image_tea.setImageResource(state_images.containsKey(state) ? state_images.get(state) : R.drawable.tea);
-
-		// update extended info
-		StringBuilder info_details = new StringBuilder();
-		for (String el : extras.keySet()) {
-			info_details
-					.append(el)
-					.append(": ")
-					.append(extras.getString(el, "null"))
-					.append("\n");
-		}
-		details_text.setText(info_details.toString());
 	}
 
 	void setErrorState(String message) {
@@ -170,7 +170,7 @@ public class ProgressActivity extends Activity {
 		@Override
 		public boolean onTouch(View view, MotionEvent motionEvent) {
 			if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-				TeapotAPI.makeRequest("get_state");
+				TeapotAPI.makeRequest("get_stats");
 				details_text.setVisibility(View.VISIBLE);
 				return true;
 			} else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
