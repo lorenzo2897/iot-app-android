@@ -15,6 +15,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		// make tea!
+		context.getSharedPreferences("schedule", Context.MODE_PRIVATE).edit().putLong("time", 0).apply();
 		int temp = intent.getIntExtra("temp", 40);
 		int strength = intent.getIntExtra("strength", 2);
 		Log.i("Debug", String.valueOf(temp));
