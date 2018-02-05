@@ -20,21 +20,25 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
         <activity android:name=".ProgressActivity">
         </activity>
 
-        <service
-            android:name=".MyFirebaseMessagingService">
+        <activity android:name=".ScheduleActivity" android:label="Schedule tea">
+        </activity>
+
+        <service android:name=".MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
-        <service
-            android:name=".MyFirebaseInstanceIDService">
+        <service android:name=".MyFirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
         </service>
+
+        <receiver android:name=".AlarmReceiver"></receiver>
     </application>
 
 </manifest>

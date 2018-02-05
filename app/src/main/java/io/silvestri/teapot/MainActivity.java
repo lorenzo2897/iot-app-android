@@ -168,6 +168,7 @@ public class MainActivity extends Activity {
 	}
 
 	void scheduleTeaClicked() {
-		// TODO implement scheduling tea
+		Intent intent = new Intent(this, ScheduleActivity.class);
+		startActivity(intent);
 	}
 }
